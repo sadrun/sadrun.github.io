@@ -70,7 +70,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="个人博客, web前端技术，javascript，nodjs，html，css" />
+  <meta name="keywords" content="javascript," />
 
 
 
@@ -86,15 +86,22 @@
 
 
 
-<meta name="description" content="牛海彬的个人博客，web前端，javascript，css，html，nodejs分享">
-<meta property="og:type" content="website">
-<meta property="og:title" content="暮歌">
-<meta property="og:url" content="http://yoursite.com/categories/随笔/index.html">
+<meta name="description" content="&amp;#x8FD9;&amp;#x662F;&amp;#x4F60;&amp;#x7B2C;&amp;#x4E00;&amp;#x6B21;&amp;#x79C0;&amp;#x6069;&amp;#x7231;&amp;#xFF0C;&amp;#x4F60;&amp;#x8BF4;&amp;#xFF1A;&amp;#x4F60;&amp;#x8981;&amp;#x7ED3;&amp;#x5A5A;&amp;#x4E86;&amp;#x3002;
+
+&amp;#x4EBA;&amp;#x751F;&amp;#x5904;&amp;#x5904;&amp;#x662F;&amp;#x61">
+<meta property="og:type" content="article">
+<meta property="og:title" content="throttle与debounce简述">
+<meta property="og:url" content="http://yoursite.com/2016/11/30/throttle与debounce简述/index.html">
 <meta property="og:site_name" content="暮歌">
-<meta property="og:description" content="牛海彬的个人博客，web前端，javascript，css，html，nodejs分享">
+<meta property="og:description" content="&amp;#x8FD9;&amp;#x662F;&amp;#x4F60;&amp;#x7B2C;&amp;#x4E00;&amp;#x6B21;&amp;#x79C0;&amp;#x6069;&amp;#x7231;&amp;#xFF0C;&amp;#x4F60;&amp;#x8BF4;&amp;#xFF1A;&amp;#x4F60;&amp;#x8981;&amp;#x7ED3;&amp;#x5A5A;&amp;#x4E86;&amp;#x3002;
+
+&amp;#x4EBA;&amp;#x751F;&amp;#x5904;&amp;#x5904;&amp;#x662F;&amp;#x61">
+<meta property="og:updated_time" content="2016-11-30T11:35:58.931Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="暮歌">
-<meta name="twitter:description" content="牛海彬的个人博客，web前端，javascript，css，html，nodejs分享">
+<meta name="twitter:title" content="throttle与debounce简述">
+<meta name="twitter:description" content="&amp;#x8FD9;&amp;#x662F;&amp;#x4F60;&amp;#x7B2C;&amp;#x4E00;&amp;#x6B21;&amp;#x79C0;&amp;#x6069;&amp;#x7231;&amp;#xFF0C;&amp;#x4F60;&amp;#x8BF4;&amp;#xFF1A;&amp;#x4F60;&amp;#x8981;&amp;#x7ED3;&amp;#x5A5A;&amp;#x4E86;&amp;#x3002;
+
+&amp;#x4EBA;&amp;#x751F;&amp;#x5904;&amp;#x5904;&amp;#x662F;&amp;#x61">
 
 
 
@@ -115,10 +122,10 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/随笔/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/11/30/throttle与debounce简述/"/>
 
 
-  <title> 分类: 随笔 | 暮歌 </title>
+  <title> throttle与debounce简述 | 暮歌 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -139,7 +146,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -250,47 +257,193 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        随笔
-        <small>分类</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                throttle与debounce简述
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-30T19:35:16+08:00" content="2016-11-30">
+              2016-11-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/30/throttle与debounce简述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/30/throttle与debounce简述/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/11/30/throttle与debounce简述/" class="leancloud_visitors" data-flag-title="throttle与debounce简述">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="//schema.org/Article">
-    <header class="post-header">
+      
+        <blockquote>
+<p>&#x8FD9;&#x662F;&#x4F60;&#x7B2C;&#x4E00;&#x6B21;&#x79C0;&#x6069;&#x7231;&#xFF0C;&#x4F60;&#x8BF4;&#xFF1A;&#x4F60;&#x8981;&#x7ED3;&#x5A5A;&#x4E86;&#x3002;</p>
+</blockquote>
+<p>&#x4EBA;&#x751F;&#x5904;&#x5904;&#x662F;&#x610F;&#x5916;&#xFF0C;&#x5904;&#x5904;&#x662F;&#x65E0;&#x5948;&#x3002;&#x6709;&#x4E9B;&#x4E8B;&#xFF0C;&#x8FC7;&#x53BB;&#x4E86;&#x5C31;&#x8FC7;&#x53BB;&#x4E86;&#xFF0C;&#x8FC7;&#x4E0D;&#x53BB;&#xFF0C;&#x5C31;&#x662F;&#x9057;&#x61BE;&#x4E86;&#x3002;&#x4E0D;&#x626F;&#x4E86;&#xFF0C;&#x8D8A;&#x626F;&#x611F;&#x89C9;&#x8D8A;&#x84DD;&#x7626;&#x3002;&#x56DE;&#x5F52;&#x6B63;&#x9898;&#xFF0C;&#x6765;&#x8BF4;&#x8BF4;js&#x4E2D;throttle&#x4E0E;debounce&#x3002;<br>throttle&#xFF0C;&#x8BCD;&#x5982;&#x5176;&#x540D;&#xFF0C;&#x5C31;&#x662F;&#x9600;&#x95E8;&#x7684;&#x610F;&#x601D;&#xFF0C;&#x5F53;&#x7136;&#x66F4;&#x786E;&#x5207;&#x7684;&#x53EB;&#x8282;&#x6D41;&#x9600;&#x3002;&#x5B83;&#x4E3B;&#x8981;&#x662F;&#x7528;&#x6765;&#x9632;&#x6B62;&#x5728;&#x8F83;&#x77ED;&#x65F6;&#x95F4;&#x5185;&#x591A;&#x6B21;&#x8C03;&#x7528;&#x67D0;&#x4E2A;&#x65B9;&#x6CD5;&#x5BFC;&#x81F4;&#x6D4F;&#x89C8;&#x5668;&#x6027;&#x80FD;&#x964D;&#x4F4E;&#x3002;debounce&#xFF0C;&#x4E2D;&#x6587;&#x8BD1;&#x4E3A;&#x9632;&#x53CD;&#x8DF3;&#xFF0C;&#x9632;&#x6296;&#x4E4B;&#x7C7B;&#x7684;&#xFF08;&#x60F3;&#x8C61;&#x4E00;&#x4E0B;&#x4F60;&#x628A;&#x4E00;&#x4E2A;&#x5F39;&#x7C27;&#x538B;&#x4E0B;&#x53BB;&#x4E00;&#x76F4;&#x4E0D;&#x52A8;&#xFF0C;&#x76F4;&#x5230;&#x4F60;&#x653E;&#x624B;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5B83;&#x624D;&#x6062;&#x590D;&#x539F;&#x72B6;&#x7684;&#x90A3;&#x4E2A;&#x6837;&#x5B50;&#xFF09;&#xFF0C;&#x4ED6;&#x4E3B;&#x8981;&#x662F;&#x9632;&#x6B62;&#x591A;&#x6B21;&#x89E6;&#x53D1;&#x540C;&#x6837;&#x7684;&#x4E8B;&#x4EF6;&#x800C;&#x5BFC;&#x81F4;&#x591A;&#x6B21;&#x8C03;&#x7528;&#x540C;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x53D1;&#x751F;&#x4E00;&#x4E9B;&#x8BA9;&#x4EBA;&#x610F;&#x5916;&#x7684;&#x7ED3;&#x679C;&#x3002;throttle&#x591A;&#x7528;&#x4E8E;&#x7C7B;&#x4F3C;&#x6EDA;&#x52A8;&#xFF0C;&#x62D6;&#x52A8;&#xFF0C;&#x6ED1;&#x52A8;&#x4E4B;&#x7C7B;&#x7684;&#xFF0C;&#x800C;debounce&#x591A;&#x7528;&#x4E8E;&#x9891;&#x7387;&#x4E0D;&#x90A3;&#x4E48;&#x9AD8;&#x7684;&#x4E8B;&#x4EF6;&#xFF08;&#x9274;&#x4E8E;debounce&#x6211;&#x6CA1;&#x600E;&#x4E48;&#x7528;&#x8FC7;&#xFF0C;&#x6240;&#x4EE5;&#x4F60;&#x61C2;&#x5F97;&#xFF09;&#x3002;&#x4E0B;&#x9762;&#x6765;&#x770B;&#x770B;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x5427;&#xFF1A;<a id="more"></a><br>throttle&#xFF1A;</p>
+<pre><code>function throttle(delay,callback){//delay&#x95F4;&#x9694;&#x5185;&#x5FC5;&#x7136;&#x6267;&#x884C;&#x4E00;&#x6B21;
+    var last,//&#x4E0A;&#x6B21;&#x8C03;&#x7528;&#x65F6;&#x95F4;
+        timer = null;
+    return function(){
+        var curr = Date.now(),//&#x5F53;&#x524D;&#x8C03;&#x7528;&#x65F6;&#x95F4;
+            context = this,
+            args = arguments;
+        clearTimeout(timer);//&#x6E05;&#x9664;&#x4E0A;&#x4E2A;&#x5B9A;&#x65F6;&#x5668;
+        if(!last){
+            last = curr;//&#x7B2C;&#x4E00;&#x6B21;&#x8C03;&#x7528;&#x8D4B;&#x503C;
+        }
+        if((curr - last) &gt; delay){//&#x82E5;&#x65F6;&#x95F4;&#x95F4;&#x9694;&#x5927;&#x4E8E;&#x7ED9;&#x5B9A;&#x5EF6;&#x65F6;&#xFF0C;&#x5219;&#x7ACB;&#x5373;&#x8C03;&#x7528;&#x56DE;&#x8C03;
+            callback.apply(context,args);
+            last = curr;//&#x5C06;&#x6700;&#x540E;&#x4E00;&#x6B21;&#x65F6;&#x95F4;&#x6539;&#x4E3A;&#x5F53;&#x524D;&#x65F6;&#x95F4;
+        }else{//&#x5982;&#x679C;&#x65F6;&#x95F4;&#x95F4;&#x9694;&#x8F83;&#x5C0F;&#xFF0C;&#x5219;&#x5EF6;&#x65F6;&#x6267;&#x884C;
+            timer = setTimeout(function(){
+                callback.apply(context,args);
+            },delay);
+        }
+    }
+}
+</code></pre><p>&#x5177;&#x4F53;&#x6CE8;&#x91CA;&#x5DF2;&#x7ED9;&#x51FA;&#xFF0C;&#x5E94;&#x8BE5;&#x90FD;&#x660E;&#x767D;&#x4E86;&#x3002;&#x5728;&#x6700;&#x8FD1;&#x5199;&#x7684;&#x4E00;&#x4E2A;&#x5F39;&#x6027;&#x6EDA;&#x52A8;&#x6848;&#x4F8B;&#x4E2D;&#xFF0C;&#x5C31;&#x7528;&#x5230;&#x8FD9;&#x4E2A;&#x65B9;&#x5F0F;&#xFF08;&#x540E;&#x8FB9;&#x6587;&#x7AE0;&#x4F1A;&#x4ECB;&#x7ECD;&#x4E0B;&#x600E;&#x4E48;&#x5199;&#x7684;&#xFF09;&#xFF0C;&#x7531;&#x4E8E;&#x5728;&#x79FB;&#x52A8;&#x7AEF;&#x4E0D;&#x65AD;&#x89E6;&#x6478;&#x6ED1;&#x52A8;&#x65F6;&#xFF0C;touchmove&#x5728;&#x4E0D;&#x505C;&#x7684;&#x89E6;&#x53D1;&#xFF08;&#x597D;&#x50CF;&#x6BCF;&#x79D2;&#x6709;&#x51E0;&#x767E;&#x6B21;&#xFF0C;&#x5177;&#x4F53;&#x591A;&#x5C11;&#x5176;&#x5B9E;&#x6211;&#x4E5F;&#x4E0D;&#x6E05;&#x695A;&#xFF09;&#xFF0C;&#x5982;&#x679C;&#x5728;&#x6BCF;&#x6B21;touchmove&#x4E4B;&#x540E;&#x90FD;&#x53BB;&#x64CD;&#x4F5C;&#x5143;&#x7D20;&#x4F4D;&#x7F6E;&#xFF0C;&#x8FD9;&#x6837;&#x5728;&#x79FB;&#x52A8;&#x7AEF;&#x90A3;&#x8106;&#x5F31;&#x7684;&#x5C0F;&#x751F;&#x547D;&#x6709;&#x70B9;&#x5403;&#x4E0D;&#x6D88;&#xFF0C;&#x4F1A;&#x51FA;&#x73B0;&#x5361;&#x987F;&#x4E4B;&#x7C7B;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#xFF0C;&#x8282;&#x6D41;&#x5728;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x663E;&#x5F97;&#x5F88;&#x91CD;&#x8981;&#xFF0C;&#x7B97;&#x662F;&#x6551;&#x547D;&#x4ED9;&#x836F;&#x3002;&#x4E0A;&#x9762;&#x7ED9;&#x51FA;&#x8282;&#x6D41;&#x5199;&#x6CD5;&#x53EA;&#x662F;&#x5176;&#x4E2D;&#x4E00;&#x79CD;&#xFF0C;&#x8FD8;&#x6709;&#x597D;&#x591A;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#xFF0C;&#x5F53;&#x7136;&#x5927;&#x540C;&#x5C0F;&#x5F02;&#xFF0C;&#x4E0D;&#x8FC7;&#x66F4;&#x7CBE;&#x7EC6;&#x7684;&#x5B9E;&#x73B0;&#x9002;&#x7528;&#x6027;&#x6BD4;&#x8F83;&#x9AD8;&#xFF0C;&#x6709;&#x5174;&#x8DA3;&#x7684;&#x8BDD;&#x53EF;&#x53C2;&#x7167;underscore.js&#x4E2D;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x3002;<br>debounce&#xFF1A;</p>
+<pre><code>var debounce = function(delay, callback){
+  var timer;
+  return function(){
+    var ctx = this, args = arguments
+    clearTimeout(timer)
+    timer = setTimeout(function(){
+        callback.apply(ctx, args)
+    }, delay)
+  }
+}
+</code></pre><p>&#x4E0A;&#x9762;&#x662F;&#x4E00;&#x4E2A;debounce&#x7684;&#x7B80;&#x5355;&#x5B9E;&#x73B0;&#xFF0C;&#x5728;&#x5B9E;&#x9645;&#x4E2D;&#x4F60;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x76D1;&#x542C;&#x7528;&#x6237;&#x8F93;&#x5165;&#x53D1;&#x9001;ajax&#x8BF7;&#x6C42;&#x9891;&#x7387;&#x63A7;&#x5236;&#xFF0C;&#x51CF;&#x5C11;&#x670D;&#x52A1;&#x7AEF;&#x538B;&#x529B;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x63A7;&#x5236;&#x591A;&#x6B21;&#x70B9;&#x51FB;&#x6309;&#x94AE;&#x89E6;&#x53D1;&#x4E00;&#x4E9B;&#x591A;&#x6B21;&#x63D0;&#x4EA4;&#x4E4B;&#x7C7B;&#x7684;&#x95EE;&#x9898;&#x3002;<br>&#x6700;&#x540E;&#x518D;&#x8BF4;&#x660E;&#x4E00;&#x70B9;&#xFF0C;throttle&#x548C;debounce&#x5FC5;&#x987B;&#x8981;&#x7528;&#x5728;&#x9002;&#x5408;&#x7684;&#x573A;&#x666F;&#x624D;&#x80FD;&#x53D1;&#x6325;&#x5B83;&#x6700;&#x5927;&#x529F;&#x6548;&#xFF0C;&#x5207;&#x8BB0;&#x4E0D;&#x8981;&#x5728;&#x8BE5;&#x7528;throttle&#x7684;&#x65F6;&#x5019;&#x4F60;&#x7528;&#x4E86;debounce&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x540E;&#x679C;&#x662F;&#x76F8;&#x5F53;&#x7CDF;&#x7CD5;&#x7684;&#xFF0C;&#x5047;&#x8BBE;&#x4F60;&#x5728;touchmove&#x6216;&#x8005;mousemove&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F60;&#x7528;&#x4E86;debounce&#x6A21;&#x5F0F;&#xFF0C;&#x90A3;&#x5B83;&#x5F88;&#x53EF;&#x80FD;&#x5C31;&#x4E0D;&#x662F;&#x8FDE;&#x7EED;&#x7684;&#x52A8;&#x753B;&#x4E86;&#xFF0C;&#x5F88;&#x53EF;&#x80FD;&#x5C31;&#x53D8;&#x6210;&#x8DF3;&#x8DF3;&#x732A;&#x4E86;&#xFF0C;&#x4EA7;&#x54C1;&#x4F1A;&#x63D0;&#x5200;&#x6765;&#x89C1;&#x4F60;&#x3002;&#x672C;&#x6587;&#x53EA;&#x662F;&#x5BF9;&#x8FD9;&#x4E24;&#x4E2A;&#x8BBE;&#x8BA1;&#x601D;&#x8DEF;&#x7684;&#x4E00;&#x79CD;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#xFF0C;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x56E0;&#x4EBA;&#x800C;&#x5F02;&#xFF0C;&#x53EA;&#x8981;&#x5728;&#x4E3B;&#x65E8;&#x601D;&#x60F3;&#x5185;&#x5C31;&#x884C;&#x3002;</p>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2016/10/17/起航/" itemprop="url">
-              
-                <span itemprop="name">起航</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-10-17T21:38:24+08:00"
-              content="2016-10-17" >
-          10-17
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/29/css3前缀探测/" rel="next" title="css3前缀探测">
+                <i class="fa fa-chevron-left"></i> css3前缀探测
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </section>
 
-  
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -298,6 +451,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/30/throttle与debounce简述/"
+           data-title="throttle与debounce简述" data-url="http://yoursite.com/2016/11/30/throttle与debounce简述/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -317,8 +478,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -368,6 +538,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -464,6 +645,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 
