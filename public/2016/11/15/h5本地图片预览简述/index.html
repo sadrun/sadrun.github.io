@@ -97,7 +97,7 @@
 
 上一篇简单说了下ajax文件上功能。只是针对这一h5技术做了简单试用，没有做必要的体验优化。在我们做上传功能时，经常会有测试或者产品说，你这上传功能体验好差，等在那里半天才看到图片，每当听到这样的抱怨的时候，心理苦的不知道说啥。这要是搁在以前，或许我还可以把这个锅甩给服务端的同学（谁叫你们响应的这么慢，你看看，这都快要年底了，图片还看不到。），但是，现在">
 <meta property="og:image" content="http://yoursite.com/1.png">
-<meta property="og:updated_time" content="2016-11-15T11:04:20.000Z">
+<meta property="og:updated_time" content="2016-12-12T06:03:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="h5本地图片预览简述">
 <meta name="twitter:description" content="不知为什么，写着写着，心里静的自己都怕
@@ -365,7 +365,7 @@
 
  }
  reader.readAsDataURL(file);//file参数其中一种就是input中的文件对象。
-</code></pre><p>就这么简单的几行代码，就可以实现文件读取操作，上面用到了FileReader的readAsDataURL方法，此方法会把文件读取为base64格式数据（跟canvas的toDataURL方法获得是一抹一样的数据），然后，你可以直接赋值给img的src属性，这样就可以不用等待服务端返回图片地址，等待图片加载。可参考<strong><a href="http://minisky.duapp.com/skyexample/upload" target="_blank" rel="external">Demo</a></strong>当然FileReader还有其他的方法如下图：<br><img src="1.png" alt=""><br>途中红色区域就是读取时的类型设置。其他功能看字面意思体会，都似曾相识。<br>另外，可以及时显示图片还有另外一种方法window.URL.createObjectURL(blob || file),此方法会根据传入的参数创建一个指向该参数对象的URL，这个URL的生命仅存在于它被创建的这个文档里，新的对象URL指向执行的File对象或者是Blob对象，然后就可以通过这个URL来展示图片。<br>在这个时候，我们又要怀念一下IE了，以前都说IE怎么怎么不行，这次真不敢这样说，IE6就开始支持显示本地路径的图片，后面的版本通过Microsoft.AlphaImageLoader滤镜也可以实现此方法（IE8貌似也支持本地路径显示），滤镜的具体方法我就不写了，可以自行网上查资料了解。</p>
+</code></pre><p>就这么简单的几行代码，就可以实现文件读取操作，上面用到了FileReader的readAsDataURL方法，此方法会把文件读取为base64格式数据（跟canvas的toDataURL方法获得是一抹一样的数据），然后，你可以直接赋值给img的src属性，这样就可以不用等待服务端返回图片地址，等待图片加载。可参考<strong><a href="http://sadrun.duapp.com/skyexample/upload" target="_blank" rel="external">Demo</a></strong>当然FileReader还有其他的方法如下图：<br><img src="1.png" alt=""><br>途中红色区域就是读取时的类型设置。其他功能看字面意思体会，都似曾相识。<br>另外，可以及时显示图片还有另外一种方法window.URL.createObjectURL(blob || file),此方法会根据传入的参数创建一个指向该参数对象的URL，这个URL的生命仅存在于它被创建的这个文档里，新的对象URL指向执行的File对象或者是Blob对象，然后就可以通过这个URL来展示图片。<br>在这个时候，我们又要怀念一下IE了，以前都说IE怎么怎么不行，这次真不敢这样说，IE6就开始支持显示本地路径的图片，后面的版本通过Microsoft.AlphaImageLoader滤镜也可以实现此方法（IE8貌似也支持本地路径显示），滤镜的具体方法我就不写了，可以自行网上查资料了解。</p>
 <p>另外再提一点，既然我们把数据读出来了，那么理论上配合前一篇提到的ajax方法和FormData就可以直接把当前获得base64数据上传了，通过FormData的append方法实现。服务端进行相应的解析（没试过，之前只知道通过二进制形式上传，不过据说可以）。本篇文章就到这，以上都是个人粗浅的认识以及蹩脚的解决方案，如果有讲错或者没讲清楚的地方，欢迎留言交流</p>
 
       

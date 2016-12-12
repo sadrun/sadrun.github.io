@@ -100,7 +100,7 @@
 然而，出来混总是要还的。记得">
 <meta property="og:image" content="http://yoursite.com/jsonp_1.png">
 <meta property="og:image" content="http://yoursite.com/jsonp_2.png">
-<meta property="og:updated_time" content="2016-10-20T12:53:02.000Z">
+<meta property="og:updated_time" content="2016-12-12T06:00:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跨域之JSONP那些事">
 <meta name="twitter:description" content="跨域不是你想跨，想跨就能跨
@@ -365,7 +365,7 @@
 <p><strong>跨域</strong>一直是个老生常谈的问题，由于受<strong>同源策略</strong>限制，跨域确实是每个前端开发经常会遇到的一个问题。跨域的方式有很多种，但是 个人 认为目前普遍用得最多的还是<strong>JSONP</strong>.对于这种跨域方式，我想变态的人呢都已经深扒了其中的原理，骨头渣都可能研究了一番，并且谨慎的在用着。像我这种长得帅，习惯飘逸走位的人，当然是信手拈来，哪里想用就用哪里，相当滋润。</p>
 <p><strong>然而</strong>，出来混总是要还的。记得那时青春年少的我做一个功能时，<a id="more"></a>由于我当初是刚来公司，只有一个测试服务器权限，带我的师傅说这个功能的代码就放在我有权限的这台服务器，可是服务端同学给我的接口是另一个服务器上部署的，于是聪明的我一想肯定是跨域了，就潇洒地抄了一段类似下面代码：</p>
 <pre><code> $.ajax({
-    url:&quot;http://minisky.duapp.com/test/json&quot;,
+    url:&quot;http://sadrun.duapp.com/test/json&quot;,
     dataType: &quot;jsonp&quot;,
     jsonp: &quot;callback&quot;,
     success: function(response) {
@@ -375,7 +375,7 @@
 </code></pre><p>看这段代码没啥毛病，挺简约的，本以为数据没问题了，可以做余下的活了，结果跑起来让我看到了最不愿看到的事，<br><img src="jsonp_1.png" alt="logo"></p>
 <p>看到这唯美的画面，我立刻慌了，语法错了？哪里少了什么参数？返回的数据需要处理一下？各种猜想在我脑子里像幻灯片一样过着，尝试了各种都无果，几近奔溃（为什么不问同事呢：因为刚来此地，怕生，不敢）。之后就赶紧查资料，了解<strong>jsonp</strong>跨域。当然，上面的出的错误，搜了一下，很快得到了答案，那就是服务端没有提供相应的跨域处理，需要服务端童鞋处理下，很快，服务端童鞋给了一个新接口，类似下面：</p>
 <pre><code>$.ajax({
-    url:&quot;http://minisky.duapp.com/test/jsonp&quot;,
+    url:&quot;http://sadrun.duapp.com/test/jsonp&quot;,
     dataType: &quot;jsonp&quot;,
     jsonp: &quot;callback&quot;,
     success: function(response) {
@@ -387,7 +387,7 @@
 <p><strong>什么是JSONP？</strong><br>年轻的我起初以为jsonp是ajax，因为我总是看到上面那些$.ajax()代码，当然更年轻的时候我以为ajax只有jquery有，后来才明白压根不是那么回事。jsonp可以说和ajax没啥关系，只不过jquery为了方便，将它同ajax封装在了一个方法中，因此误导了一批又一批少不经事的小白。jsonp有的人说他是一种非正式的传输协议，也有的人说就是一个get请求，感觉都挺对，不过这样说，我感觉如果换做一年前的我，应该还是不理解。浏览器为了安全起见，规定不同源的客户端脚本在没明确授权的情况下，不能读写对方的资源，所以ajax方法没办法请求其他站点的数据（当然，xhr2例外），但是人们发现&lt;script&gt;标签是不受影响的，他可以执行来自不同服务器的代码，于是，服务端通过返回text/javascript类型的数据，使得返回的数据可以被浏览器解释执行。于是我们得到了它的真实面目：</p>
 <pre><code>var script=document.createElement(&quot;script&quot;);  
 script.type=&quot;text/javascript&quot;;  
-script.src=&quot;http://minisky.duapp.com/test/jsonp?callback=jsonpCallback&quot;;  
+script.src=&quot;http://sadrun.duapp.com/test/jsonp?callback=jsonpCallback&quot;;  
 document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
 
 function jsonpCallback(data){//最终调用执行
@@ -406,7 +406,7 @@ function jsonpCallback(data){//最终调用执行
     script.src = url+&quot;?callback=&quot;+funcN;
     document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
 }
-jsonp(&apos;http://minisky.duapp.com/test/jsonp&apos;,function(data){
+jsonp(&apos;http://sadrun.duapp.com/test/jsonp&apos;,function(data){
     console.log(JSON.stringify(data));
 })
 </code></pre><p>上面的方法似乎已经可以满足大部分需求了，但是依然有一些弊端，例如，无法传递一些额外的参数，或者请求失败处理等。对于和我一样，拿来主义的人来说，上面的就属于歪瓜裂枣，根本不屑一顾。所以我们在对上面的代码进行深加工，再加工之后，就有了下面比较全面的jsonp：</p>
@@ -486,7 +486,7 @@ jsonp(&apos;http://minisky.duapp.com/test/jsonp&apos;,function(data){
 }
 
 jsonp({
-    url: &apos;http://minisky.duapp.com/test/jsonp&apos;,
+    url: &apos;http://sadrun.duapp.com/test/jsonp&apos;,
     params: {},//其他参数，json格式的 
     success: function(data){
        console.log(JSON.stringify(data)); 

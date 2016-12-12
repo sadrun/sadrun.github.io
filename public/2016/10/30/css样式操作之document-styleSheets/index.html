@@ -98,7 +98,7 @@
 杭州开始变天了，很不幸，被突如其来的寒风伤着了，一把鼻涕，一把泪。在床上躺了好久之后，觉得还是写篇文章压压惊。前些天，有个大学同学问我，说他在项目中遇到一问题，有个效果的样式一直改不过来，并且截图给我，如下图：他想把图中红色部分的样式去掉，严格来说就是禁用掉，于是他用Jquery提供的css方法，将图中两个样式设置为默认值，结果却没有用。代码也给我看了，确实直接$(selector">
 <meta property="og:image" content="http://yoursite.com/1.png">
 <meta property="og:image" content="http://yoursite.com/2.png">
-<meta property="og:updated_time" content="2016-10-30T23:28:18.000Z">
+<meta property="og:updated_time" content="2016-12-12T06:02:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="css样式操作之document.styleSheets">
 <meta name="twitter:description" content="天凉好个秋
@@ -418,7 +418,7 @@ for(var i=0;i&lt;sheets.length;i++){
 <li>如果，如果你用的chrome浏览器,而且是只是随便写了静态页面测试，没有启动一个本地或者线上服务的情况下，你载入了一个随便写的css文件（线上文件除外），这样就不起作用了。不是方法不对，是因为浏览器不让你这么做，所以你需要起个本地服务或者在线上的一个服务。然后就成功了。当然，如果你是第一种情况，那么就不需要起服务了。</li>
 <li>如果，若果你引入了其他域下的css文件，而且此刻你很想很想去禁用掉它其中的样式，那么，这个方法是行不通的，因为通过js读不到跨域样式文件中的规则，这就需要你真的看看外部引入的class是否真的很有必要，如果不是很特别（其实都不特别），你就稍微改下当前的代码结构，不用它的了。</li>
 </ul>
-<p>上面的方法在google下亲测确实在规范之内是有用的，如果有什么问题，可以探讨下，或者对我刚开始抛出的问题有其他的解决方案，都可以探讨下，另外原测试代码在<a href="http://minisky.duapp.com/demo/sem/download.html" target="_blank" rel="external">http://minisky.duapp.com/demo/sem/download.html</a>，这个页面本来是我想写一篇关于touch事件的文章，从实际项目中做的一个移动推广页面中扒出来的一个简略版，一并拿来在上面测试。最好是在控制台调出移动版页面看。直接调用 styletool.deleteRule(selector)就可测试。</p>
+<p>上面的方法在google下亲测确实在规范之内是有用的，如果有什么问题，可以探讨下，或者对我刚开始抛出的问题有其他的解决方案，都可以探讨下，另外原测试代码在<a href="http://sadrun.duapp.com/demo/sem/download.html" target="_blank" rel="external">http://sadrun.duapp.com/demo/sem/download.html</a>，这个页面本来是我想写一篇关于touch事件的文章，从实际项目中做的一个移动推广页面中扒出来的一个简略版，一并拿来在上面测试。最好是在控制台调出移动版页面看。直接调用 styletool.deleteRule(selector)就可测试。</p>
 
       
     </div>

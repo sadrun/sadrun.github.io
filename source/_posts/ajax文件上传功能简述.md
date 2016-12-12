@@ -16,7 +16,7 @@ categories: 技术
 
     var data = new FormData(form/null);//可以是表单对象，或者为空，后边自己添加数据。
     $.ajax({ 
-	    url: 'http://minisky.duapp.com/upload',//接口 
+	    url: 'http://sadrun.duapp.com/upload',//接口 
 	    type: 'POST',  
 	    data: data,   
 	    processData: false,  //告诉jquery对象处理你要发送的数据
@@ -38,7 +38,7 @@ categories: 技术
         }
     });
 
-上面基本算是一个完整的ajax文件上传代码。自己当时再做上传功能时临时做了个测试**[demo](http://minisky.duapp.com/skyexample/upload):**http://minisky.duapp.com/skyexample/upload 由于仅仅是测试，代码未做优化，比较丑。当然，如果不太喜欢jquery的可以用原生的ajax来完成，代码比较简单整洁，该demo代码中也有相应例子，不过不完整，也不多说，可以自由发挥。
+上面基本算是一个完整的ajax文件上传代码。自己当时再做上传功能时临时做了个测试**[demo](http://sadrun.duapp.com/skyexample/upload):**http://sadrun.duapp.com/skyexample/upload 由于仅仅是测试，代码未做优化，比较丑。当然，如果不太喜欢jquery的可以用原生的ajax来完成，代码比较简单整洁，该demo代码中也有相应例子，不过不完整，也不多说，可以自由发挥。
 到这里，或许会发现，跨域了怎么办，上面代码并没有做跨域相关的解释。首先我们要知道，跨域受两方面限制，一方面来自浏览器，一方面来自服务端，既然我们都在用现代浏览器了，那么自然浏览器允许你跨域了，支持你跨域的这个需求，那么接下来就是服务端是否支持了，如果有一天你遇到出现跨域限制问题，就不要为难自己了，大胆的去跟服务端同学说下，你这边需要设置一下允许跨域的头，类似这样：
 
     res.header("Access-Control-Allow-Origin", "*");//*指的是允许任何网站跨域请求，你可以指定你所在一个或者几个域。

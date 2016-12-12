@@ -13,7 +13,7 @@ categories: 技术
    
 
      $.ajax({
-        url:"http://minisky.duapp.com/test/json",
+        url:"http://sadrun.duapp.com/test/json",
         dataType: "jsonp",
         jsonp: "callback",
         success: function(response) {
@@ -27,7 +27,7 @@ categories: 技术
 看到这唯美的画面，我立刻慌了，语法错了？哪里少了什么参数？返回的数据需要处理一下？各种猜想在我脑子里像幻灯片一样过着，尝试了各种都无果，几近奔溃（为什么不问同事呢：因为刚来此地，怕生，不敢）。之后就赶紧查资料，了解**jsonp**跨域。当然，上面的出的错误，搜了一下，很快得到了答案，那就是服务端没有提供相应的跨域处理，需要服务端童鞋处理下，很快，服务端童鞋给了一个新接口，类似下面：
 
     $.ajax({
-        url:"http://minisky.duapp.com/test/jsonp",
+        url:"http://sadrun.duapp.com/test/jsonp",
         dataType: "jsonp",
         jsonp: "callback",
         success: function(response) {
@@ -45,7 +45,7 @@ categories: 技术
 
     var script=document.createElement("script");  
     script.type="text/javascript";  
-    script.src="http://minisky.duapp.com/test/jsonp?callback=jsonpCallback";  
+    script.src="http://sadrun.duapp.com/test/jsonp?callback=jsonpCallback";  
     document.getElementsByTagName("head")[0].appendChild(script);
     
     function jsonpCallback(data){//最终调用执行
@@ -66,7 +66,7 @@ categories: 技术
         script.src = url+"?callback="+funcN;
         document.getElementsByTagName("head")[0].appendChild(script);
     }
-    jsonp('http://minisky.duapp.com/test/jsonp',function(data){
+    jsonp('http://sadrun.duapp.com/test/jsonp',function(data){
         console.log(JSON.stringify(data));
     })
     
@@ -148,7 +148,7 @@ categories: 技术
 	}
 	
 	jsonp({
-        url: 'http://minisky.duapp.com/test/jsonp',
+        url: 'http://sadrun.duapp.com/test/jsonp',
         params: {},//其他参数，json格式的 
         success: function(data){
            console.log(JSON.stringify(data)); 
