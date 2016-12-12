@@ -1,0 +1,1044 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+    
+
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="跨域不是你想跨，想跨就能跨
+
+跨域一直是个老生常谈的问题，由于受同源策略限制，跨域确实是每个前端开发经常会遇到的一个问题。跨域的方式有很多种，但是 个人 认为目前普遍用得最多的还是JSONP.对于这种跨域方式，我想变态的人呢都已经深扒了其中的原理，骨头渣都可能研究了一番，并且谨慎的在用着。像我这种长得帅，习惯飘逸走位的人，当然是信手拈来，哪里想用就用哪里，相当滋润。
+然而，出来混总是要还的。记得">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域之JSONP那些事">
+<meta property="og:url" content="http://yoursite.com/2016/10/18/跨域之JSONP那些事/index.html">
+<meta property="og:site_name" content="暮歌">
+<meta property="og:description" content="跨域不是你想跨，想跨就能跨
+
+跨域一直是个老生常谈的问题，由于受同源策略限制，跨域确实是每个前端开发经常会遇到的一个问题。跨域的方式有很多种，但是 个人 认为目前普遍用得最多的还是JSONP.对于这种跨域方式，我想变态的人呢都已经深扒了其中的原理，骨头渣都可能研究了一番，并且谨慎的在用着。像我这种长得帅，习惯飘逸走位的人，当然是信手拈来，哪里想用就用哪里，相当滋润。
+然而，出来混总是要还的。记得">
+<meta property="og:image" content="http://yoursite.com/jsonp_1.png">
+<meta property="og:image" content="http://yoursite.com/jsonp_2.png">
+<meta property="og:updated_time" content="2016-10-20T12:53:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨域之JSONP那些事">
+<meta name="twitter:description" content="跨域不是你想跨，想跨就能跨
+
+跨域一直是个老生常谈的问题，由于受同源策略限制，跨域确实是每个前端开发经常会遇到的一个问题。跨域的方式有很多种，但是 个人 认为目前普遍用得最多的还是JSONP.对于这种跨域方式，我想变态的人呢都已经深扒了其中的原理，骨头渣都可能研究了一番，并且谨慎的在用着。像我这种长得帅，习惯飘逸走位的人，当然是信手拈来，哪里想用就用哪里，相当滋润。
+然而，出来混总是要还的。记得">
+<meta name="twitter:image" content="http://yoursite.com/jsonp_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/10/18/跨域之JSONP那些事/"/>
+
+
+  <title> 跨域之JSONP那些事 | 暮歌 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暮歌</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">web前端技术分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                跨域之JSONP那些事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-18T19:55:26+08:00" content="2016-10-18">
+              2016-10-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/18/跨域之JSONP那些事/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/跨域之JSONP那些事/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/18/跨域之JSONP那些事/" class="leancloud_visitors" data-flag-title="跨域之JSONP那些事">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>跨域不是你想跨，想跨就能跨</p>
+</blockquote>
+<p><strong>跨域</strong>一直是个老生常谈的问题，由于受<strong>同源策略</strong>限制，跨域确实是每个前端开发经常会遇到的一个问题。跨域的方式有很多种，但是 个人 认为目前普遍用得最多的还是<strong>JSONP</strong>.对于这种跨域方式，我想变态的人呢都已经深扒了其中的原理，骨头渣都可能研究了一番，并且谨慎的在用着。像我这种长得帅，习惯飘逸走位的人，当然是信手拈来，哪里想用就用哪里，相当滋润。</p>
+<p><strong>然而</strong>，出来混总是要还的。记得那时青春年少的我做一个功能时，<a id="more"></a>由于我当初是刚来公司，只有一个测试服务器权限，带我的师傅说这个功能的代码就放在我有权限的这台服务器，可是服务端同学给我的接口是另一个服务器上部署的，于是聪明的我一想肯定是跨域了，就潇洒地抄了一段类似下面代码：</p>
+<pre><code> $.ajax({
+    url:&quot;http://minisky.duapp.com/test/json&quot;,
+    dataType: &quot;jsonp&quot;,
+    jsonp: &quot;callback&quot;,
+    success: function(response) {
+        console.log(response.name);
+    }
+});
+</code></pre><p>看这段代码没啥毛病，挺简约的，本以为数据没问题了，可以做余下的活了，结果跑起来让我看到了最不愿看到的事，<br><img src="jsonp_1.png" alt="logo"></p>
+<p>看到这唯美的画面，我立刻慌了，语法错了？哪里少了什么参数？返回的数据需要处理一下？各种猜想在我脑子里像幻灯片一样过着，尝试了各种都无果，几近奔溃（为什么不问同事呢：因为刚来此地，怕生，不敢）。之后就赶紧查资料，了解<strong>jsonp</strong>跨域。当然，上面的出的错误，搜了一下，很快得到了答案，那就是服务端没有提供相应的跨域处理，需要服务端童鞋处理下，很快，服务端童鞋给了一个新接口，类似下面：</p>
+<pre><code>$.ajax({
+    url:&quot;http://minisky.duapp.com/test/jsonp&quot;,
+    dataType: &quot;jsonp&quot;,
+    jsonp: &quot;callback&quot;,
+    success: function(response) {
+        console.log(response.name);
+    }
+});
+</code></pre><p>于是得到了下面这样结果，功能终于正常了。<br><img src="jsonp_2.png" alt="logo"></p>
+<p>本可以高高兴兴的和小伙伴开心的玩耍了，但是，做为一个有理想的小白，还是决心将之前问题搞得透彻一点。实际上在上面报错的时候，除了报喂捕获的错误之外，老版本浏览器会顺带给一句英文提示（我把浏览器版本升的太高，出不来，就不粘贴了），大致意思是说返回的数据被当做js解释的时候呢发现发现类型不对（原谅我大学应总是不及格），于是就报了那么一段错。看来还是要深扒一下<strong>JSONP</strong>原理才能安心，虽然特别不喜欢这样做，但是，你懂得。</p>
+<p><strong>什么是JSONP？</strong><br>年轻的我起初以为jsonp是ajax，因为我总是看到上面那些$.ajax()代码，当然更年轻的时候我以为ajax只有jquery有，后来才明白压根不是那么回事。jsonp可以说和ajax没啥关系，只不过jquery为了方便，将它同ajax封装在了一个方法中，因此误导了一批又一批少不经事的小白。jsonp有的人说他是一种非正式的传输协议，也有的人说就是一个get请求，感觉都挺对，不过这样说，我感觉如果换做一年前的我，应该还是不理解。浏览器为了安全起见，规定不同源的客户端脚本在没明确授权的情况下，不能读写对方的资源，所以ajax方法没办法请求其他站点的数据（当然，xhr2例外），但是人们发现&lt;script&gt;标签是不受影响的，他可以执行来自不同服务器的代码，于是，服务端通过返回text/javascript类型的数据，使得返回的数据可以被浏览器解释执行。于是我们得到了它的真实面目：</p>
+<pre><code>var script=document.createElement(&quot;script&quot;);  
+script.type=&quot;text/javascript&quot;;  
+script.src=&quot;http://minisky.duapp.com/test/jsonp?callback=jsonpCallback&quot;;  
+document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
+
+function jsonpCallback(data){//最终调用执行
+    console.log(JSON.stringify(data));
+}
+</code></pre><p>最终，服务端会返回jsonpCallback(data),和上面返回的数据格式一样，然后浏览器将其执行。到这里可能明白了，原来高大上的jsonp就是一个script资源请求。但是在用的时候发现上面的代码不够灵活，jquery提供的感觉灵活简洁多了，所以，我们就将其改造一下，稍微有点函数式编程的意思：</p>
+<pre><code>function jsonp(url,callback){
+    var script=document.createElement(&quot;script&quot;);
+    script.type=&quot;text/javascript&quot;;
+    random = parseInt(Math.random() * 1000000000000 + 1000000000000); 
+    var funcN =[&apos;JSONPCallback&apos;, random].join(&apos;&apos;);
+    window[funcN] = function(data){
+        //产生一个全局变量，在数据请求成功时，会执行这个函数。
+        callback &amp;&amp; callback(data);
+    }
+    script.src = url+&quot;?callback=&quot;+funcN;
+    document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
+}
+jsonp(&apos;http://minisky.duapp.com/test/jsonp&apos;,function(data){
+    console.log(JSON.stringify(data));
+})
+</code></pre><p>上面的方法似乎已经可以满足大部分需求了，但是依然有一些弊端，例如，无法传递一些额外的参数，或者请求失败处理等。对于和我一样，拿来主义的人来说，上面的就属于歪瓜裂枣，根本不屑一顾。所以我们在对上面的代码进行深加工，再加工之后，就有了下面比较全面的jsonp：</p>
+<pre><code>function jsonp(options){ //jsonp
+    // 配置
+    var defaults = {
+        url: &apos;&apos;,            // 请求地址
+        params: {},         // 附加参数
+        jsonp: &apos;callback&apos;,  // jsonp回调函数，?jsonp=jsonpCallback
+        jsonpCallback: &apos;&apos;,  // jsonp回调函数，如果此值为空，函数名将会随机生成，?jsonp=jsonpCallback
+        version: false,     // 是否需要版本号
+        remove: true,       // 加载完成后，是否删除script
+        success: null,       // 加载完成
+        onerror: null,      // 加载失败
+        error: 3            // 加载失败重试次数
+    };
+    // 内部函数
+    var extend = function() {
+        var args = Array.prototype.slice.apply(arguments), json = {};
+        if (args.length) {
+            json = args.shift();
+            for (var i = 0, len = args.length; i &lt; len; i ++) for (var id in args[i]) json[id] = args[i][id];
+        }
+        return json;
+    };
+    var j2p = function(json) {
+        var a = [];
+        for (var i in json) a.push(i + &apos;=&apos; + json[i]);
+        return a.join(&apos;&amp;&apos;);
+    };
+
+    // 合并配置
+    var options = extend({}, defaults, options);
+
+    // 加载失败函数回调执行
+    if (options.error &lt;= 0) {
+        options.onerror &amp;&amp; options.onerror.constructor == Function &amp;&amp; options.onerror();
+        return false;
+    }
+
+    var head = document.getElementsByTagName(&apos;head&apos;)[0],
+        script = document.createElement(&apos;script&apos;),
+        url = options.url,
+        random = parseInt(Math.random() * 1000000000000 + 1000000000000);
+
+    // jsonpCallback，若无传值，取随机值
+    options.jsonpCallback = options.jsonpCallback || [&apos;JSONPCallback&apos;, random].join(&apos;&apos;);
+    options.params[options.jsonp] = options.jsonpCallback;
+
+    if (options.version) {
+        options.params[&apos;_&apos;] = random;
+    }
+
+    window[options.jsonpCallback] = function() {
+        // success事件回调
+        options.success &amp;&amp; options.success.constructor == Function &amp;&amp; options.success.apply(options, arguments);
+        // 是否删除当前请求载体
+        options.remove &amp;&amp; head.removeChild(script);
+    };
+
+    var params = j2p(options.params);
+    if (params) {
+        var urls = url.split(&apos;?&apos;), s = &apos;&apos;;
+        if (urls[1] === undefined) s = &apos;?&apos;;
+        else if (urls[1] !== &apos;&apos;) s = &apos;&amp;&apos;;
+        url = [url, s, params].join(&apos;&apos;);
+    }
+    script.src = url;
+
+    // 失败重试，次数 -1
+    script.onerror = function() {
+        options.error -= 1;
+    };
+
+    // script节点插入文档
+    head.appendChild(script);
+}
+
+jsonp({
+    url: &apos;http://minisky.duapp.com/test/jsonp&apos;,
+    params: {},//其他参数，json格式的 
+    success: function(data){
+       console.log(JSON.stringify(data)); 
+    }
+    //其他参数可根据需要自己配置
+})
+</code></pre><p>这篇关于jsonp的浅谈差不多就到这了。可能有的人会说，人家jquery，zepto等一些成熟的框架jsonp都已经做得那么好了，弄这个有啥用，确实没啥大用，但是在某些方面还是不错的，例如，你写一个功能简单，需求较少的页面时，本来整个页面可能就不到5k,结果，你需要一个跨域请求数据，这时候，其实不太建议用这些个框架，自己能写，就随手写几行代码，页面性能和加载速度都会有很大提高。好了，最后补几句，由于本人也是小白一枚，所说的都是自己的理解，和正确的解释讲解都会差那么一大截，还请见谅。如果说的有什么错误或者有什么技术上的想法可以留言。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/17/起航/" rel="next" title="起航">
+                <i class="fa fa-chevron-left"></i> 起航
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/30/css样式操作之document-styleSheets/" rel="prev" title="css样式操作之document.styleSheets">
+                css样式操作之document.styleSheets <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/18/跨域之JSONP那些事/"
+           data-title="跨域之JSONP那些事" data-url="http://yoursite.com/2016/10/18/跨域之JSONP那些事/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="牛海彬" />
+          <p class="site-author-name" itemprop="name">牛海彬</p>
+          <p class="site-description motion-element" itemprop="description">牛海彬的个人博客，web前端，javascript，css，html，nodejs分享</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牛海彬</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sadrun"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("VdAXdTW9DvQJbNBGOMYg3zXq-gzGzoHsz", "QMOVVilXXDJdPwoJw6aRrUfY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
