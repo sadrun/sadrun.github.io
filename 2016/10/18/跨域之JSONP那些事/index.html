@@ -6,19 +6,15 @@
 
 
 <html class="theme-next muse use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -27,34 +23,38 @@
 
 
 
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
 
 
 
   
   
-  
-  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
 
   
-    
-    
   
-
   
-
-  
-
-  
-
   
 
   
     
     
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
     
     
 
@@ -65,45 +65,41 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="javascript," />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
+  <meta name="keywords" content="javascript,">
 
 
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
 
 
 
 
 
 
-<meta name="description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;
-
-&amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
+<meta name="description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;  &amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="跨域之JSONP那些事">
 <meta property="og:url" content="http://yoursite.com/2016/10/18/跨域之JSONP那些事/index.html">
 <meta property="og:site_name" content="暮歌">
-<meta property="og:description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;
-
-&amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
+<meta property="og:description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;  &amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2016/10/18/跨域之JSONP那些事/jsonp_1.png">
 <meta property="og:image" content="http://yoursite.com/2016/10/18/跨域之JSONP那些事/jsonp_2.png">
 <meta property="og:updated_time" content="2016-12-12T06:00:28.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="跨域之JSONP那些事">
-<meta name="twitter:description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;
-
-&amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
+<meta name="twitter:description" content="&amp;#x8DE8;&amp;#x57DF;&amp;#x4E0D;&amp;#x662F;&amp;#x4F60;&amp;#x60F3;&amp;#x8DE8;&amp;#xFF0C;&amp;#x60F3;&amp;#x8DE8;&amp;#x5C31;&amp;#x80FD;&amp;#x8DE8;  &amp;#x8DE8;&amp;#x57DF;&amp;#x4E00;&amp;#x76F4;&amp;#x662F;&amp;#x4E2A;&amp;#x8001;&amp;#x751F;&amp;#x5E38;&amp;#x8C08;&amp;#x7684;&amp;#x95">
 <meta name="twitter:image" content="http://yoursite.com/2016/10/18/跨域之JSONP那些事/jsonp_1.png">
 
 
@@ -125,7 +121,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/18/跨域之JSONP那些事/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/18/跨域之JSONP那些事/">
 
 
   <title> 跨域之JSONP那些事 | 暮歌 </title>
@@ -157,7 +153,7 @@
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">暮歌</span>
       <span class="logo-line-after"><i></i></span>
@@ -184,7 +180,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -194,7 +190,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -204,7 +200,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -214,7 +210,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -227,7 +223,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
             
             搜索
           </a>
@@ -299,7 +295,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -558,8 +554,7 @@ jsonp({
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/18/跨域之JSONP那些事/"
-           data-title="跨域之JSONP那些事" data-url="http://yoursite.com/2016/10/18/跨域之JSONP那些事/">
+      <div class="ds-thread" data-thread-key="2016/10/18/跨域之JSONP那些事/" data-title="跨域之JSONP那些事" data-url="http://yoursite.com/2016/10/18/跨域之JSONP那些事/">
       </div>
     
   </div>
@@ -584,7 +579,7 @@ jsonp({
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -595,9 +590,7 @@ jsonp({
 
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="牛海彬" />
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="牛海彬">
           <p class="site-author-name" itemprop="name">牛海彬</p>
           <p class="site-description motion-element" itemprop="description">牛海彬的个人博客，web前端，javascript，css，html，nodejs分享</p>
         </div>
@@ -666,10 +659,10 @@ jsonp({
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -677,15 +670,15 @@ jsonp({
 </div>
 
 <div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+  欢迎交流
 </div>
 
 <div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
+  <a class="theme-link" href="https://github.com/sadrun/">
+    Github
   </a>
 </div>
+
 
         
 
