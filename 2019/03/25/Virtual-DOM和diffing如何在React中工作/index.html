@@ -1,0 +1,920 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    
+    
+
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="javascript,">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="&amp;#x5DE5;&amp;#x4F5C;&amp;#x4E2D;&amp;#x4F7F;&amp;#x7528;react&amp;#x7684;&amp;#x65F6;&amp;#x95F4;&amp;#x86EE;&amp;#x4E45;&amp;#x4E86;&amp;#xFF0C;&amp;#x5176;&amp;#x5B9E;&amp;#x4E00;&amp;#x76F4;&amp;#x5F88;&amp;#x60F3;&amp;#x4E86;&amp;#x89E3;&amp;#x865A;&amp;#x62DF;Dom&amp;#x7684;&amp;#x5DE5">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Virtual-DOM和diffing如何在React中工作">
+<meta property="og:url" content="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/index.html">
+<meta property="og:site_name" content="暮歌">
+<meta property="og:description" content="&amp;#x5DE5;&amp;#x4F5C;&amp;#x4E2D;&amp;#x4F7F;&amp;#x7528;react&amp;#x7684;&amp;#x65F6;&amp;#x95F4;&amp;#x86EE;&amp;#x4E45;&amp;#x4E86;&amp;#xFF0C;&amp;#x5176;&amp;#x5B9E;&amp;#x4E00;&amp;#x76F4;&amp;#x5F88;&amp;#x60F3;&amp;#x4E86;&amp;#x89E3;&amp;#x865A;&amp;#x62DF;Dom&amp;#x7684;&amp;#x5DE5">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/react-flow.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/dom-create.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/react-diff.png">
+<meta property="og:updated_time" content="2019-04-10T09:53:34.294Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Virtual-DOM和diffing如何在React中工作">
+<meta name="twitter:description" content="&amp;#x5DE5;&amp;#x4F5C;&amp;#x4E2D;&amp;#x4F7F;&amp;#x7528;react&amp;#x7684;&amp;#x65F6;&amp;#x95F4;&amp;#x86EE;&amp;#x4E45;&amp;#x4E86;&amp;#xFF0C;&amp;#x5176;&amp;#x5B9E;&amp;#x4E00;&amp;#x76F4;&amp;#x5F88;&amp;#x60F3;&amp;#x4E86;&amp;#x89E3;&amp;#x865A;&amp;#x62DF;Dom&amp;#x7684;&amp;#x5DE5">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/react-flow.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/">
+
+
+  <title> Virtual-DOM和diffing如何在React中工作 | 暮歌 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">暮歌</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">web前端技术分享</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Virtual-DOM和diffing如何在React中工作
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-03-25T22:05:34+08:00" content="2019-03-25">
+              2019-03-25
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2019/03/25/Virtual-DOM和diffing如何在React中工作/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/03/25/Virtual-DOM和diffing如何在React中工作/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2019/03/25/Virtual-DOM和diffing如何在React中工作/" class="leancloud_visitors" data-flag-title="Virtual-DOM和diffing如何在React中工作">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/2019/03/25/Virtual-DOM&#x548C;diffing&#x5982;&#x4F55;&#x5728;React&#x4E2D;&#x5DE5;&#x4F5C;/react-flow.png" alt="react-flow"></p>
+<p>&#x5DE5;&#x4F5C;&#x4E2D;&#x4F7F;&#x7528;react&#x7684;&#x65F6;&#x95F4;&#x86EE;&#x4E45;&#x4E86;&#xFF0C;&#x5176;&#x5B9E;&#x4E00;&#x76F4;&#x5F88;&#x60F3;&#x4E86;&#x89E3;&#x865A;&#x62DF;Dom&#x7684;&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF0C;&#x867D;&#x7136;&#x4F7F;&#x7528;&#x4E45;&#x4E86;&#xFF0C;&#x5728;&#x8868;&#x8C61;&#x4E0A;&#x5B83;&#x770B;&#x8D77;&#x6765;&#x8DDF;&#x4E0A;&#x9762;&#x56FE;&#x4E00;&#x6837;&#x86EE;&#x6E05;&#x6670;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x7EC8;&#x7A76;&#x611F;&#x89C9;&#x6709;&#x70B9;&#x4E0D;&#x5F97;&#x52B2;&#x3002;&#x6240;&#x4EE5;&#x9700;&#x8981;&#x518D;&#x6DF1;&#x5165;&#x7684;&#x4E86;&#x89E3;&#x4E0B;&#x3002;</p>
+<blockquote>
+<p>&#x5728;&#x8FD9;&#x4E4B;&#x524D;&#xFF0C;&#x6211;&#x4E0D;&#x77E5;&#x9053;&#x5927;&#x5BB6;&#x66FE;&#x7ECF;&#x6216;&#x8005;&#x6B64;&#x523B;&#x6709;&#x6CA1;&#x6709;&#x60F3;&#x8FC7;&#x4E00;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x90A3;&#x5C31;&#x662F;&#x4E3A;&#x4EC0;&#x4E48;react&#x4E2D;&#x4F1A;&#x4F7F;&#x7528;virtual Dom&#x5462;&#xFF1F;</p>
+</blockquote>
+<p>&#x5982;&#x679C;&#x6709;&#x4EBA;&#x5728;&#x8FD9;&#x4E4B;&#x524D;&#x95EE;&#x6211;&#x4E0A;&#x9762;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x6211;&#x80AF;&#x5B9A;&#x4F1A;&#x8010;&#x5FC3;&#x7684;&#xFF08;&#x4E0D;&#x8010;&#x70E6;&#x7684;&#xFF09;&#x544A;&#x8BC9;&#x4ED6;&#xFF0C;&#x56E0;&#x4E3A;&#x201C;&#x64CD;&#x4F5C;dom&#x6BD4;&#x8F83;&#x6162;&#x201D;&#x3002;&#x8FD9;&#x4E2A;&#x56DE;&#x7B54;&#x5176;&#x5B9E;&#x770B;&#x4E0A;&#x53BB;&#x86EE;&#x80FD;&#x6577;&#x884D;&#x6BCF;&#x4E2A;&#x63D0;&#x95EE;&#x8005;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x6BD5;&#x7ADF;&#x77E5;&#x9053;&#x4E86;&#x539F;&#x56E0;&#x3002;&#x4E0D;&#x8FC7;&#x6211;&#x4EEC;&#x8FD8;&#x662F;&#x5148;&#x7B80;&#x5355;&#x770B;&#x770B;Dom&#x7684;&#x6784;&#x5EFA;&#x6D41;&#x7A0B;&#xFF0C;&#x7136;&#x540E;&#x518D;&#x56DE;&#x5230;&#x8FD9;&#x4E2A;&#x4E0A;&#x9762;&#x95EE;&#x9898;&#x3002;</p>
+<p><img src="/2019/03/25/Virtual-DOM&#x548C;diffing&#x5982;&#x4F55;&#x5728;React&#x4E2D;&#x5DE5;&#x4F5C;/dom-create.png" alt="dom-create"><br>&#x8FD9;&#x4E2A;&#x56FE;&#x5728;&#x6211;&#x4EEC;&#x521D;&#x5165;&#x524D;&#x7AEF;&#x65F6;&#xFF0C;&#x5E94;&#x8BE5;&#x90FD;&#x6709;&#x4E86;&#x89E3;&#x8FC7;&#xFF0C;&#x5B83;&#x5C55;&#x793A;&#x4E86;html&#x8F6C;&#x6362;&#x6210;Dom&#x5230;&#x7ED8;&#x5236;&#x5230;&#x5C4F;&#x5E55;&#x7684;&#x6574;&#x4E2A;&#x8FC7;&#x7A0B;&#x3002;&#x6BCF;&#x6B21;Dom&#x7684;&#x67D0;&#x4E9B;&#x5185;&#x5BB9;&#x53D1;&#x751F;&#x53D8;&#x5316;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x7531;&#x4E8E;Dom&#x88AB;&#x8868;&#x793A;&#x4E3A;&#x4E00;&#x4E2A;&#x6811;&#x7ED3;&#x6784;&#xFF0C;&#x56E0;&#x6B64;&#x5BF9;Dom&#x7684;&#x66F4;&#x6539;&#x662F;&#x975E;&#x5E38;&#x5FEB;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x66F4;&#x6539;&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x53EA;&#x662F;&#x5728;&#x4EE3;&#x7801;&#x5C42;&#x9762;&#xFF08;&#x8DDF;&#x4F60;&#x77E5;&#x9053;vdom&#x64CD;&#x4F5C;&#x4E00;&#x4E2A;&#x6837;&#xFF09;&#xFF0C;&#x800C;&#x66F4;&#x6539;&#x540E;&#x7684;&#x5143;&#x7D20;&#xFF0C;&#x5FC5;&#x987B;&#x7ECF;&#x8FC7;&#x4E0A;&#x9762;&#x56FE;&#x4E2D;&#x91CD;&#x6392;&#x9636;&#x6BB5;&#xFF0C;&#x7136;&#x540E;&#x628A;&#x65B0;&#x7684;&#x7ED3;&#x679C;&#x91CD;&#x7ED8;&#x5230;&#x754C;&#x9762;&#xFF0C;&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#x662F;&#x975E;&#x5E38;&#x6162;&#x7684;&#xFF0C;&#x6709;&#x65F6;&#x4FAF;&#x6162;&#x7684;&#x53EF;&#x80FD;&#x4F60;&#x5C31;&#x611F;&#x77E5;&#x5230;&#x4E86;&#xFF0C;&#x800C;&#x4E14;&#x53EA;&#x8981;&#x4F60;&#x5728;&#x8FD9;&#x8FC7;&#x7A0B;&#x4E2D;&#x518D;&#x8FDB;&#x884C;&#x4E00;&#x6B21;DOM&#x66F4;&#x65B0;&#xFF0C;&#x6574;&#x4E2A;&#x6E32;&#x67D3;&#x6D41;&#x7A0B;&#x90FD;&#x4F1A;&#x91CD;&#x505A;&#x4E00;&#x904D;&#x56E0;&#x6B64;&#xFF0C;&#x91CD;&#x6392;/&#x91CD;&#x7ED8;&#x7684;&#x9879;&#x76EE;&#x8D8A;&#x591A;&#xFF0C;&#x6211;&#x4EEC;&#x7684;&#x5E94;&#x7528;&#x5C31;&#x8D8A;&#x6162;&#x3002;<br>&#x800C;&#x521A;&#x597D; <strong>Virtual DOM&#x8BD5;&#x56FE;&#x6700;&#x5C0F;&#x5316; &#x91CD;&#x6392;/&#x91CD; &#x7ED8;&#x8FD9;&#x4E24;&#x4E2A;&#x9636;&#x6BB5;&#xFF0C;&#x4ECE;&#x800C;&#x4E3A;&#x5927;&#x578B;&#x590D;&#x6742;&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x83B7;&#x5F97;&#x66F4;&#x597D;&#x7684;&#x6027;&#x80FD;</strong><br>&#x6BCF;&#x5F53;&#x4F60;&#x60F3;&#x5BF9;&#x89C6;&#x56FE;&#x8FDB;&#x884C;&#x4E00;&#x6B21;&#x66F4;&#x65B0;&#xFF0C;&#x5B9E;&#x8D28;&#x4E0A;&#x90A3;&#x4E9B;&#x672C;&#x8BE5;&#x76F4;&#x63A5;&#x4F5C;&#x7528;&#x4E8E;&#x771F;&#x5B9E;DOM&#x7684;&#x6539;&#x52A8;&#xFF0C;&#x90FD;&#x4F1A;&#x5148;&#x4F5C;&#x7528;&#x4E8E;Virtual DOM&#xFF0C;&#x7136;&#x540E;&#x518D;&#x5C06;&#x8981;&#x6539;&#x52A8;&#x7684;&#x90E8;&#x5206;&#x901A;&#x77E5;&#x5230;&#x771F;&#x5B9E;DOM&#x3002;&#x8FD9;&#x6837;&#x53EF;&#x4EE5;&#x5927;&#x5E45;&#x51CF;&#x5C11;DOM&#x64CD;&#x4F5C;&#x5E26;&#x6765;&#x7684;&#x91CD;&#x8BA1;&#x7B97;&#x6B65;&#x9AA4;&#x3002;</p>
+<blockquote>
+<p>&#x5BF9;&#x4E8E;DOM &#x64CD;&#x4F5C; &#x771F;&#x6B63;&#x88AB;&#x8BDF;&#x75C5;&#x7684;&#x662F;&#x6BCF;&#x6B21;&#x64CD;&#x4F5C;&#x90FD;&#x4F1A;&#x89E6;&#x53D1;&#x5E03;&#x5C40;&#x7684;&#x6539;&#x53D8;&#x3001;DOM&#x6811;&#x7684;&#x4FEE;&#x6539;&#x548C;&#x6E32;&#x67D3;&#x3002;&#x5047;&#x8BBE;&#x6211;&#x4EEC;&#x53BB;&#x4FEE;&#x6539;&#x4E8C;&#x5341;&#x591A;&#x4E2A;&#x8282;&#x70B9;&#xFF0C;&#x4E00;&#x4E2A;&#x4E00;&#x4E2A;&#x53BB;&#x4FEE;&#x6539;&#xFF0C;&#x5C31;&#x4F1A;&#x5F15;&#x8D77;20&#x591A;&#x6B21;&#x6F5C;&#x5728;&#x7684;&#x5E03;&#x5C40;&#x91CD;&#x6392;&#x548C;&#x91CD;&#x7ED8;&#x3002;&#x800C;&#x91C7;&#x7528;virtual Dom&#x5219;&#x4E0D;&#x4F1A;&#xFF08;&#x5C3D;&#x53EF;&#x80FD;&#x5C11;&#x7684;&#xFF09;&#x533A;&#x53BB;&#x91CD;&#x65B0;&#x6E32;&#x67D3;&#xFF0C;&#x5B83;&#x4F1A;&#x5C06;&#x4F60;&#x8FD9;&#x4E2A;&#x6279;&#x6B21;&#x7684;&#x4FEE;&#x6539;&#x5C3D;&#x53EF;&#x80FD;&#x4E00;&#x8D77;&#x53BB;&#x66F4;&#x65B0;&#x5230;&#x771F;&#x5B9E;Dom&#xFF0C;&#x8FD9;&#x6837;&#x4E0A;&#x9762;&#x4E8C;&#x5341;&#x591A;&#x4E2A;&#x8282;&#x70B9;&#x7684;&#x6539;&#x52A8;&#x5C31;&#x4F1A;&#x53D8;&#x6210;&#x4E00;&#x6B21;&#x91CD;&#x6392;&#x548C;&#x91CD;&#x7ED8;&#x3002;&#x5F53;&#x7136;&#xFF0C;&#x6211;&#x4EEC;&#x4E5F;&#x53EF;&#x4EE5;&#x4E0D;&#x7528;virtual Dom&#xFF0C;&#x800C;&#x81EA;&#x5DF1;&#x624B;&#x52A8;&#x4E00;&#x6B21;&#x6027;&#x66F4;&#x6539;&#xFF0C;&#x4E5F;&#x80FD;&#x8FBE;&#x5230;&#x8FD9;&#x6837;&#x7684;&#x7ED3;&#x679C;&#x3002;<br><a id="more"></a></p>
+</blockquote>
+<h2 id="&#x4E86;&#x89E3;Virtual-DOM"><a href="#&#x4E86;&#x89E3;Virtual-DOM" class="headerlink" title="&#x4E86;&#x89E3;Virtual-DOM"></a>&#x4E86;&#x89E3;Virtual-DOM</h2><p>&#x6211;&#x4EEC;&#x5728;&#x9879;&#x76EE;&#x4E2D;&#x7ECF;&#x5E38;&#x5199;&#x5230;&#x7C7B;&#x4F3C;&#x4E0B;&#x9762;&#x7684;jsx&#x4EE3;&#x7801;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">render() {</span><br><span class="line">    const { asyncValue } = this.state;</span><br><span class="line">    return (</span><br><span class="line">        &lt;div className=&quot;test&quot; style={{textAlign:&apos;center&apos;}}&gt;</span><br><span class="line">            &lt;p&gt;</span><br><span class="line">                &lt;span&gt;&#x540C;&#x6B65;&#x6570;&#x636E;&#xFF1A;&lt;/span&gt;</span><br><span class="line">                &lt;span&gt;{ asyncValue }&lt;/span&gt;</span><br><span class="line">            &lt;/p&gt; </span><br><span class="line">            &lt;form onSubmit={this.handleSubmit}&gt;</span><br><span class="line">                &lt;input name=&quot;input&quot; type=&quot;text&quot; defaultValue=&quot;Hangzhou&quot; /&gt; </span><br><span class="line">                &lt;button type=&quot;submit&quot;&gt;&#x540C;&#x6B65;&lt;/button&gt;</span><br><span class="line">            &lt;/form&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x53EA;&#x662F;&#x4E66;&#x5199;&#x4E0A;&#x7684;&#x4E00;&#x79CD;&#x5F62;&#x5F0F;&#xFF0C;&#x5F53;&#x7136;&#x8FD9;&#x79CD;&#x5199;&#x6CD5;&#x770B;&#x8D77;&#x6765;&#x7ED3;&#x6784;&#x6BD4;&#x8F83;&#x6E05;&#x6670;&#xFF0C;&#x8DDF;&#x771F;&#x5B9E;Dom&#x7684;&#x7ED3;&#x6784;&#x8D8B;&#x8FD1;&#x4E8E;&#x4E00;&#x6837;&#xFF0C;&#x4ED6;&#x6700;&#x7EC8;&#x88AB;&#x5404;&#x79CD;&#x7F16;&#x8BD1;&#x63D2;&#x4EF6;&#x8FDB;&#x884C;&#x7F16;&#x8BD1;&#xFF0C;&#x7F16;&#x8BD1;&#x6210;&#x6D4F;&#x89C8;&#x5668;&#x80FD;&#x6267;&#x884C;&#x7684;&#x666E;&#x901A;js&#x4EE3;&#x7801;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x6267;&#x884C;&#xFF0C;&#x6700;&#x7EC8;&#x7F16;&#x8BD1;&#x7684;&#x7ED3;&#x679C;&#x7C7B;&#x4F3C;&#x4E0B;&#x9762;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">render() {</span><br><span class="line">    var asyncValue = this.state.asyncValue;</span><br><span class="line">    return  React.createElement(</span><br><span class="line">                &apos;div&apos;,</span><br><span class="line">                { className: &apos;test&apos;,style: { textAlign:&apos;center&apos; } },</span><br><span class="line">                [</span><br><span class="line">                    React.createElement(</span><br><span class="line">                        &apos;p&apos;,</span><br><span class="line">                        null,</span><br><span class="line">                        [</span><br><span class="line">                            React.createElement(</span><br><span class="line">                                &apos;span&apos;,</span><br><span class="line">                                null,</span><br><span class="line">                                &apos;&#x540C;&#x6B65;&#x6570;&#x636E;&#xFF1A;&apos;</span><br><span class="line">                            ) ,</span><br><span class="line">                            React.createElement(</span><br><span class="line">                                &apos;span&apos;,</span><br><span class="line">                                 null,</span><br><span class="line">                                `${ asyncValue }`</span><br><span class="line">                            ) ,</span><br><span class="line">                        ],   </span><br><span class="line">                    ) </span><br><span class="line">                    ...&#x9012;&#x5F52;&#x8111;&#x8865;&#x4E0B;</span><br><span class="line">                ],              </span><br><span class="line">            )</span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x8FD9;&#x6BB5;&#x5C31;&#x662F;&#x6700;&#x7EC8;&#x5728;&#x6D4F;&#x89C8;&#x5668;&#x4E2D;&#x8FD0;&#x884C;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x6211;&#x4EEC;&#x6240;&#x8981;&#x7684;&#x865A;&#x62DF;&#xFF08;js&#x5BF9;&#x8C61;&#xFF09;dom&#x5C31;&#x662F;&#x901A;&#x8FC7;render&#x6267;&#x884C;(this.render())&#x65F6;&#x4FAF;&#x8FD4;&#x56DE;&#x7684;&#x5BF9;&#x8C61;,&#x6700;&#x7EC8;&#x8FD4;&#x56DE;&#x7684;&#x7ED3;&#x679C;&#x7C7B;&#x4F3C;&#x5982;&#x4E0B;&#x7ED3;&#x6784;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">    type: &apos;div&apos;,</span><br><span class="line">    props: {</span><br><span class="line">        className:&apos;test&apos;,</span><br><span class="line">        style:{ textAlign:&apos;center&apos; },</span><br><span class="line">        children:[</span><br><span class="line">            {</span><br><span class="line">                type: &quot;p&quot;,  </span><br><span class="line">                props:{</span><br><span class="line">                    children:[</span><br><span class="line">                        ....&#x9012;&#x5F52;&#x8111;&#x8865;&#x4E0B;</span><br><span class="line">                    ]</span><br><span class="line">                }</span><br><span class="line">                ref: null, </span><br><span class="line">            }</span><br><span class="line">        ],</span><br><span class="line">    },</span><br><span class="line">    ref: null, </span><br><span class="line">}</span><br></pre></td></tr></table></figure></p>
+<p>&#x8FD9;&#x6837;&#x5C31;&#x5F62;&#x6210;&#x4E86;&#x4E00;&#x9897;js &#x865A;&#x62DF;Dom&#x6811;&#xFF0C;&#x8FD9;&#x68F5;&#x6811;&#x4E0A;&#x62E5;&#x6709;&#x6240;&#x9700;&#x8981;&#x7684;&#x5404;&#x79CD;&#x53EF;&#x53D8;&#x72B6;&#x6001;&#x3002;&#x5F53;&#x6211;&#x4EEC;&#x4FEE;&#x6539;&#x67D0;&#x4E9B;&#x72B6;&#x6001;&#x65F6;&#xFF0C;&#x5B83;&#x4F1A;&#x91CD;&#x65B0;render&#x51FA;&#x4E00;&#x9897;&#x65B0;&#x6811;&#xFF0C;&#x4E24;&#x8005;&#x5BF9;&#x6BD4;&#x4E4B;&#x540E;&#xFF08;&#x4E5F;&#x5C31;&#x662F;&#x540E;&#x9762;&#x63D0;&#x5230;&#x7684;dom-diff&#xFF09;&#xFF0C;&#x627E;&#x51FA;&#x53D8;&#x5316;&#x7684;&#x8282;&#x70B9;&#xFF0C;&#x7136;&#x540E;&#x66F4;&#x65B0;&#x5230;&#x771F;&#x5B9E;dom&#x3002;<br>&#x865A;&#x62DF;dom&#x6784;&#x5EFA;&#x5B8C;&#x6210;&#x4E4B;&#x540E;&#xFF0C;&#x5982;&#x4F55;&#x6DFB;&#x52A0;&#x5230;&#x9875;&#x9762;&#x7684;&#x5462;&#xFF1F;react &#x5728;&#x521D;&#x59CB;&#x5316;&#x65F6;&#xFF0C;&#x901A;&#x8FC7;&#x8C03;&#x7528;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">    &lt;App /&gt;,</span><br><span class="line">    document.getElementById(&apos;#root&apos;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>&#x6765;&#x751F;&#x6210;&#x771F;&#x6B63;&#x7684;dom&#x8282;&#x70B9;&#xFF0C;&#x5728;render&#x4E2D;&#xFF0C;&#x5B83;&#x4F1A;&#x8FDB;&#x884C;&#x6279;&#x91CF;&#x66F4;&#x65B0;&#xFF08;&#x5DF2;&#x5B58;&#x5728;&#xFF09;&#x6216;&#x6279;&#x91CF;&#x63D2;&#x5165;&#xFF08;&#x9996;&#x6B21;&#x6267;&#x884C;&#xFF09;&#xFF0C;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x4F1A;&#x751F;&#x6210;&#x771F;&#x5B9E;dom&#xFF0C;&#x751F;&#x6210;&#x4F9D;&#x636E;&#x4E3B;&#x8981;&#x662F;&#x6784;&#x5EFA;&#x51FA;&#x7684;&#x865A;&#x62DF;dom&#xFF0C;&#x5176;&#x4E2D;&#x4F1A;&#x53BB;&#x8C03;&#x7528;document.createElement(type)&#x6765;&#x751F;&#x6210;&#xFF0C;&#x5F53;&#x7136;&#x5176;&#x4E2D;&#x6D89;&#x53CA;&#x5230;&#x6BD4;&#x8F83;&#x590D;&#x6742;&#x7684;&#x6D41;&#x8F6C;&#x3002;render&#x4E5F;&#x53EF;&#x770B;&#x4F5C;&#x662F;react&#x4E2D;&#x865A;&#x62DF;dom&#x548C;&#x771F;&#x5B9E;dom&#x4E4B;&#x95F4;&#x7684;&#x8F6C;&#x6362;&#x5C42;&#xFF0C;&#x627F;&#x63A5;&#x4E86;&#x4E24;&#x4E2A;&#x4E4B;&#x95F4;&#x7684;&#x8054;&#x7CFB;&#x3002;&#x5176;&#x4E2D;&#x7EC4;&#x4EF6;&#x5143;&#x7D20;&#x5BF9;&#x8C61;&#x4E2D;&#x9664;&#x4E86;&#x5BF9;&#x5E94;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#xFF0C;&#x8FD8;&#x6709;&#x5176;&#x4ED6;&#x989D;&#x5916;&#x7684;&#x4E00;&#x4E9B;&#x6807;&#x8BB0;&#x5C5E;&#x6027;&#xFF0C;&#x4F8B;&#x5982;&#x83B7;&#x53D6;&#x5F53;&#x524D;&#x8FD9;&#x4E2A;&#x7EC4;&#x4EF6;&#x5B9E;&#x4F8B;&#x7684;&#x771F;&#x5B9E;dom&#x7684;&#x5C5E;&#x6027;,&#x4E5F;&#x5C31;&#x662F;&#x5728;&#x6E32;&#x67D3;&#x7EC4;&#x4EF6;&#x548C;&#x57FA;&#x672C;&#x5143;&#x7D20;&#x7684;&#x65F6;&#x5019;&#x662F;&#x5206;&#x522B;&#x505A;&#x4E86;&#x5BF9;&#x5E94;&#x5904;&#x7406;&#x3002;</p>
+<h2 id="&#x4E86;&#x89E3;diff"><a href="#&#x4E86;&#x89E3;diff" class="headerlink" title="&#x4E86;&#x89E3;diff"></a>&#x4E86;&#x89E3;diff</h2><p><img src="/2019/03/25/Virtual-DOM&#x548C;diffing&#x5982;&#x4F55;&#x5728;React&#x4E2D;&#x5DE5;&#x4F5C;/react-diff.png" alt="react-diff"></p>
+<p>React &#x4E2D;&#x6700;&#x503C;&#x5F97;&#x79F0;&#x9053;&#x7684;&#x90E8;&#x5206;&#x5E94;&#x8BE5;&#x5C31;&#x662F; Virtual DOM &#x4E0E; diff &#x7684;&#x7ED3;&#x5408;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x5176;&#x9AD8;&#x6548;&#x7684; diff &#x7B97;&#x6CD5;&#xFF0C;&#x8BA9;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x65E0;&#x9700;&#x987E;&#x5FCC;&#x6027;&#x80FD;&#x95EE;&#x9898;&#x800C;&#x201D;&#x4EFB;&#x6027;&#x81EA;&#x7531;&#x201D;&#x7684;&#x5237;&#x65B0;&#x9875;&#x9762;&#xFF0C;&#x8BA9;&#x5F00;&#x53D1;&#x8005;&#x4E5F;&#x53EF;&#x4EE5;&#x65E0;&#x9700;&#x5173;&#x5FC3; Virtual DOM &#x80CC;&#x540E;&#x7684;&#x8FD0;&#x4F5C;&#x539F;&#x7406;&#xFF0C;&#x56E0;&#x4E3A; React diff &#x4F1A;&#x5E2E;&#x52A9;&#x6211;&#x4EEC;&#x8BA1;&#x7B97;&#x51FA; Virtual DOM &#x4E2D;&#x771F;&#x6B63;&#x53D8;&#x5316;&#x7684;&#x90E8;&#x5206;&#xFF0C;&#x5E76;&#x53EA;&#x9488;&#x5BF9;&#x8BE5;&#x90E8;&#x5206;&#x8FDB;&#x884C;&#x5B9E;&#x9645; DOM &#x64CD;&#x4F5C;&#xFF0C;&#x800C;&#x975E;&#x91CD;&#x65B0;&#x6E32;&#x67D3;&#x6574;&#x4E2A;&#x9875;&#x9762;&#xFF0C;&#x4ECE;&#x800C;&#x4FDD;&#x8BC1;&#x4E86;&#x6BCF;&#x6B21;&#x64CD;&#x4F5C;&#x66F4;&#x65B0;&#x540E;&#x9875;&#x9762;&#x7684;&#x9AD8;&#x6548;&#x6E32;&#x67D3;&#xFF0C;&#x56E0;&#x6B64; Virtual DOM &#x4E0E; diff &#x662F;&#x4FDD;&#x8BC1; React &#x6027;&#x80FD;&#x53E3;&#x7891;&#x7684;&#x5E55;&#x540E;&#x63A8;&#x624B;&#x3002;</p>
+<p><strong>diff &#x7B56;&#x7565;</strong><br>1&#x3001;Web UI &#x4E2D; DOM &#x8282;&#x70B9;&#x8DE8;&#x5C42;&#x7EA7;&#x7684;&#x79FB;&#x52A8;&#x64CD;&#x4F5C;&#x7279;&#x522B;&#x5C11;&#xFF0C;&#x53EF;&#x4EE5;&#x5FFD;&#x7565;&#x4E0D;&#x8BA1;&#x3002;</p>
+<p>2&#x3001;&#x62E5;&#x6709;&#x76F8;&#x540C;&#x7C7B;&#x7684;&#x4E24;&#x4E2A;&#x7EC4;&#x4EF6;&#x5C06;&#x4F1A;&#x751F;&#x6210;&#x76F8;&#x4F3C;&#x7684;&#x6811;&#x5F62;&#x7ED3;&#x6784;&#xFF0C;&#x62E5;&#x6709;&#x4E0D;&#x540C;&#x7C7B;&#x7684;&#x4E24;&#x4E2A;&#x7EC4;&#x4EF6;&#x5C06;&#x4F1A;&#x751F;&#x6210;&#x4E0D;&#x540C;&#x7684;&#x6811;&#x5F62;&#x7ED3;&#x6784;&#x3002;</p>
+<p>3&#x3001;&#x5BF9;&#x4E8E;&#x540C;&#x4E00;&#x5C42;&#x7EA7;&#x7684;&#x4E00;&#x7EC4;&#x5B50;&#x8282;&#x70B9;&#xFF0C;&#x5B83;&#x4EEC;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x552F;&#x4E00; id &#x8FDB;&#x884C;&#x533A;&#x5206;&#x3002;</p>
+<p>&#x4EE5;&#x4E0A;&#x4E09;&#x4E2A;&#x7B56;&#x7565;&#xFF0C;React &#x5206;&#x522B;&#x5BF9; tree diff&#x3001;component diff &#x4EE5;&#x53CA; element diff &#x8FDB;&#x884C;&#x7B97;&#x6CD5;&#x4F18;&#x5316;&#xFF0C;&#x4E8B;&#x5B9E;&#x4E5F;&#x8BC1;&#x660E;&#x8FD9;&#x4E09;&#x4E2A;&#x524D;&#x63D0;&#x7B56;&#x7565;&#x662F;&#x5408;&#x7406;&#x4E14;&#x51C6;&#x786E;&#x7684;&#xFF0C;&#x5B83;&#x4FDD;&#x8BC1;&#x4E86;&#x6574;&#x4F53;&#x754C;&#x9762;&#x6784;&#x5EFA;&#x7684;&#x6027;&#x80FD;&#x3002;</p>
+<h2 id="reconciler&#xFF08;&#x8C03;&#x548C;&#xFF09;"><a href="#reconciler&#xFF08;&#x8C03;&#x548C;&#xFF09;" class="headerlink" title="reconciler&#xFF08;&#x8C03;&#x548C;&#xFF09;"></a>reconciler&#xFF08;&#x8C03;&#x548C;&#xFF09;</h2><p>diff &#x7B97;&#x6CD5;&#x548C; virtual dom &#x7684;&#x5B8C;&#x7F8E;&#x7ED3;&#x5408;&#x7684;&#x8FC7;&#x7A0B;&#x88AB;&#x79F0;&#x4E3A; reconciler&#xFF0C;&#x6709;&#x4E86; reconciler&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x53EF;&#x4EE5;&#x8131;&#x8EAB;&#x64CD;&#x4F5C;&#x771F;&#x5B9E;&#x7684; dom &#x6811;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x5411; react &#x63CF;&#x8FF0;&#x754C;&#x9762;&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x800C; react &#x4F1A;&#x5E2E;&#x52A9;&#x4F60;&#x9AD8;&#x6548;&#x7684;&#x5B8C;&#x6210;&#x771F;&#x6B63; dom &#x64CD;&#x4F5C;&#x3002;<br>&#x5728; react16&#x65B0;&#x7248;&#x4E2D;&#x5BF9;reconciler&#x505A;&#x4E86;&#x91CD;&#x5927;&#x6539;&#x53D8;&#xFF0C;&#x91C7;&#x7528;&#x4E86;fiber&#x67B6;&#x6784;&#x6765;&#x505A;reconciler,&#x4ECE;&#x800C;&#x5B9E;&#x73B0;&#x4E86;&#x5F02;&#x6B65;&#x6E32;&#x67D3;&#x3002;&#x539F;&#x6765;&#x7684;reconciler&#x8FC7;&#x7A0B;&#x662F;&#x4E00;&#x4E2A;&#x540C;&#x6B65;&#x9012;&#x5F52;&#x8FC7;&#x7A0B;&#xFF0C;&#x5F53;&#x72B6;&#x6001;&#x6539;&#x53D8;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x4ECE;&#x6839;&#x8282;&#x70B9;&#x5F00;&#x59CB;&#x904D;&#x5386;&#xFF0C;&#x627E;&#x51FA;&#x6240;&#x6709;&#x7684;&#x4E0D;&#x540C;&#xFF0C;&#x800C;&#x5BF9;&#x4E8E;&#x7279;&#x522B;&#x5E9E;&#x5927;&#x7684; dom &#x6811;&#x6765;&#x8BF4;&#xFF0C;&#x8FD9;&#x4E2A;&#x9012;&#x5F52;&#x904D;&#x5386;&#x7684;&#x8FC7;&#x7A0B;&#x4F1A;&#x6D88;&#x8017;&#x7279;&#x522B;&#x957F;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x5728;&#x8FD9;&#x4E2A;&#x671F;&#x95F4;&#xFF0C;&#x4EFB;&#x4F55;&#x4EA4;&#x4E92;&#x548C;&#x6E32;&#x67D3;&#x90FD;&#x4F1A;&#x88AB;&#x963B;&#x585E;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x7ED9;&#x7528;&#x6237;&#x4E00;&#x79CD;&#x201C;&#x6B7B;&#x673A;&#x201D;&#x7684;&#x611F;&#x89C9;&#x3002;&#x800C;fiber&#x628A; reconciler &#x7684;&#x8FC7;&#x7A0B;&#x62C6;&#x5206;&#x6210;&#x4E86;&#x4E00;&#x4E2A;&#x4E2A;&#x7684;&#x5C0F;&#x4EFB;&#x52A1;&#xFF0C;&#x5E76;&#x5728;&#x5B8C;&#x6210;&#x4E86;&#x5C0F;&#x4EFB;&#x52A1;&#x4E4B;&#x540E;&#x6682;&#x505C;&#x6267;&#x884C; js &#x4EE3;&#x7801;&#xFF0C;&#x7136;&#x540E;&#x68C0;&#x67E5;&#x662F;&#x5426;&#x6709;&#x9700;&#x8981;&#x66F4;&#x65B0;&#x7684;&#x5185;&#x5BB9;&#x548C;&#x9700;&#x8981;&#x54CD;&#x5E94;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x505A;&#x51FA;&#x76F8;&#x5E94;&#x7684;&#x5904;&#x7406;&#x540E;&#x518D;&#x7EE7;&#x7EED;&#x6267;&#x884C; js &#x4EE3;&#x7801;&#x3002;&#x8FD9;&#x6837;&#x5C31;&#x7ED9;&#x4E86;&#x7528;&#x6237;&#x4E00;&#x79CD;&#x5E94;&#x7528;&#x4E00;&#x76F4;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x611F;&#x89C9;&#xFF0C;&#x63D0;&#x9AD8;&#x4E86;&#x7528;&#x6237;&#x7684;&#x4F53;&#x9A8C;&#x3002;&#x5F53;&#x7136;&#x4ED6;&#x5BF9;&#x6BCF;&#x4E2A;&#x62C6;&#x5206;&#x7684;&#x5C0F;&#x4EFB;&#x52A1;&#x505A;&#x4E86;&#x4F18;&#x5148;&#x7EA7;&#x6807;&#x8BB0;&#xFF0C;&#x8FD9;&#x6837;&#x4FDD;&#x8BC1;&#x4E86;&#x91CD;&#x8981;&#x7684;&#x66F4;&#x65B0;&#x80FD;&#x53CA;&#x65F6;&#x540C;&#x6B65;&#x5728;&#x9875;&#x9762;&#x4E2D;&#x3002;</p>
+<p>&#x5177;&#x4F53;&#x539F;&#x7406;&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x76F8;&#x5E94;&#x7684;&#x6E90;&#x7801;&#x6216;&#x8005;&#x6587;&#x7AE0;&#xFF0C;&#x4E0D;&#x518D;&#x5F15;&#x7533;&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x662F;&#x629B;&#x51FA;fiber&#x8FD9;&#x4E2A;&#x6982;&#x5FF5;&#x3002;</p>
+<p>&#xFF08;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#x662F;kpi&#x5206;&#x4EAB;&#x6587;&#x7AE0;&#xFF0C;&#x4E0D;&#x5177;&#x6709;&#x9605;&#x8BFB;&#x6027;&#xFF0C;&#x4F60;&#x4EEC;&#x61C2;&#x5F97;&#xFF09;</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/03/移动端手势事件浅析/" rel="next" title="移动端手势事件浅析">
+                <i class="fa fa-chevron-left"></i> 移动端手势事件浅析
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2019/03/25/Virtual-DOM和diffing如何在React中工作/" data-title="Virtual-DOM和diffing如何在React中工作" data-url="http://yoursite.com/2019/03/25/Virtual-DOM和diffing如何在React中工作/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/avatar.jpg" alt="牛海彬">
+          <p class="site-author-name" itemprop="name">牛海彬</p>
+          <p class="site-description motion-element" itemprop="description">牛海彬的个人博客，web前端，javascript，css，html，nodejs分享</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#了解Virtual-DOM"><span class="nav-number">1.</span> <span class="nav-text">了解Virtual-DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#了解diff"><span class="nav-number">2.</span> <span class="nav-text">了解diff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reconciler（调和）"><span class="nav-number">3.</span> <span class="nav-text">reconciler（调和）</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">牛海彬</span>
+</div>
+
+<div class="powered-by">
+  欢迎交流
+</div>
+
+<div class="theme-info">
+  <a class="theme-link" href="https://github.com/sadrun/">
+    Github
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"sadrun"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("VdAXdTW9DvQJbNBGOMYg3zXq-gzGzoHsz", "QMOVVilXXDJdPwoJw6aRrUfY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script type="text/javascript" async src="//push.zhanzhang.baidu.com/push.js">
+</script>
+
+
+</body>
+</html>
